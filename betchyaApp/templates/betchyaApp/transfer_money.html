@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Transfer money{% endblock %}
+{% load static %}
+{% block content %}
+
+<!-- confirm money transfer details-->
+<div id="mainContent">
+    <h1>Transfer money</h1>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        {% if error_message %}
+        <p><strong style='color:red;'>{{ error_message }}</strong></p>
+        {%endif%}
+        <br>
+
+        <label>Choose action:</label>
+        <hr>
+        <select name="action">
+            <option value='1'>Transfer</option>
+            <option value='-1'>Withdraw</option>
+        </select>
+        <br>
+        <br>
+
+        <label for="amount"><b>Amount:</b></label>
+        <input type="text" placeholder="Please enter an amount" name="amount" required>
+
+        <button type="submit" class="submitbtn">Submit</button>
+
+    </form>
+
+    <form action="" method="GET">
+        {% csrf_token %}
+        <button type="submit" class="previousbtn" formaction="{% url 'payment_detail' %}" formnovalidate>Cancel</button>
+    </form>
+
+</div>
+
+
+{% endblock %}

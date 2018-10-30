@@ -1,0 +1,93 @@
+<!doctype html>
+
+<!-- specifies the page lauguage -->
+<html lang="en-US">
+
+<!-- specifies the metadata of all the pages -->
+<head>
+	<meta charset="UTF-8">
+	
+	<!-- block the part that will be extended to other pages to modify -->
+	<title>{% block title %}{% endblock %}</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<!-- laod the static styling files -->
+	{% load static %}
+	
+	<!-- link all the pages with main css file as stylesheet -->
+	<link href="{% static 'betchyaApp/css/main.css' %}" rel="stylesheet" type="text/css">
+
+</head>
+
+<!-- specifies the text style -->
+<STYLE>
+	A {
+		text-decoration: none;
+	}
+</STYLE>
+
+<body>
+	
+	<!-- specifies the main container of the page -->
+	<div class="container">
+		
+		<!-- specifies the navigation bar of the page -->
+		<!-- build the link between logo Betchya and the homeapge -->
+		<header> <a href="{% url 'home' %}">
+			
+				<!-- specifies the logo Betchya -->
+				<h4 class="logo">Betchya</h4>
+			</a>
+			<nav>
+				
+				<!-- specifies an unordered list of navigation content -->
+				<ul>
+					
+					<!-- what to display when logging in -->
+					<!-- build links to corresponding pages -->
+					{% if request.session.is_login %}
+					<li> <a href="{% url 'my_account' %}">My Account</a></li>
+					<li>Balance: ${{request.session.balance}} </a></li>
+					<li><a href="{% url 'logout' %}">Logout</a></li>
+			
+					<!-- what to display when not logging in -->
+					{% else %}
+					<li><a href="{% url 'register' %}">Register</a></li>
+					<li> <a href="{% url 'login' %}">Login</a></li>
+					{% endif %}
+				</ul>
+			</nav>
+		</header>
+	
+		<!-- specifies the sidebar of the page -->
+		{% block sidebar %}
+		<div id="sidebar">
+			<h3>Menu</h3>
+			<a href="{% url 'my_account' %}">My Account</a>
+			<br>
+			<a href="{% url 'bet_history' %}">Bet History</a>
+			<br>
+			<a href="{% url 'pending_bet' %}">Pending Bets</a>
+			<br>
+			<a href="{% url 'bet_requests' %}">Bet Requests</a>
+			<br>
+			<a href="{% url 'payment_detail' %}">Payment Details</a>
+		</div>
+		{% endblock %}
+
+		{% block content %}{% endblock %}
+
+		<!-- specifies the Footer part-->
+		<footer>
+			<ul class="nav">
+				<li><a href="{% url 'home' %}">   Home   </a></li>
+				<li><a href="{% url 'my_account' %}">-   My Account   </a></li>
+				<li><a href="{% url 'basketball' %}">-   Basketball   </a></li>
+				<li><a href="{% url 'soccer' %}">-   Soccer   </a></li>
+				<li><a href="{% url 'football' %}">-   Rugby Union   </a></li>
+			</ul>
+		</footer>
+</body>
+
+</html>

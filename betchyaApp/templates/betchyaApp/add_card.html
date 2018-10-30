@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Add card{% endblock %}
+{% load static %}
+{% block content %}
+
+
+<div id="mainContent">
+    <h1>Add card</h1>
+    <p>Please enter your card details</p>
+    <hr>
+
+    /*takes the details of the card*/
+    <form action="" method="POST">
+
+        {% csrf_token %}
+
+        {% if error_message %}
+        <p><strong style='color:red;'>{{ error_message }}</strong></p>
+        {%endif%}
+
+        <!-- get card details-->
+        <label for="card_no"><b>Please enter your Card Number</b></label>
+        <input type="text" placeholder="Enter your card number" name="card_no" required>
+
+        <label for="card_name"><b>Please enter your Card Name</b></label>
+        <input type="text" placeholder="Enter the name on your card" name="card_name" required>
+
+        <label for="card_expiry"><b>Please enter your card's Expiry Date</b></label>
+        <input type="text" placeholder="Enter your card's expiry date: MM/YY" name="card_expiry" required>
+
+        <label for="card_securityID"><b>Please enter your Card's Security Code</b></label>
+        <input type="text" placeholder="Enter your CCV Security Code" name="card_securityID" required>
+
+        <hr>
+
+        <button type="submit" class="submitbtn">Submit</button>
+    </form>
+    <form action="/payment_detail" method="GET">
+        {% csrf_token %}
+        <button type="submit" class="previousbtn" formnovalidate>Cancel</button>
+    </form>
+</div>
+
+<!-- </div> -->
+
+{% endblock %}

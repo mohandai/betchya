@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Bet requests{% endblock %}
+{% load static %}
+{% block content %}
+     <!--mainContent div tag-->
+<div id="mainContent">
+    <h1> Bet request</h1>
+
+        <!-- display bet details-->
+        <table id="bet_history">
+            <tr>
+                <th>From User</th>
+                <th>Sport</th>
+                <th>Match</th>
+                <th>Date</th>
+                <th>to Win</th>
+                <th>Bet</th>
+                <th>Action</th>
+            </tr>
+
+            <tr>
+                <td>User 1</td>
+                <td>Basketbsall</td>
+                <td>A vs B</td>
+                <td>xx/xx/20xx xx:xx</td>
+                <td>A</td>
+                <td>$4.00</td>
+                <td><button type="submit">Accept</button><button type="submit">Delete</button></td>
+            </tr>
+
+	    </table>
+
+</div>
+
+
+{% endblock %}

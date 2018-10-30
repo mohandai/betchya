@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Bet history{% endblock %}
+{% load static %}
+{% block content %}
+<!--mainContent div tag-->
+<div id="mainContent">
+    <h1> Bet History </h1>
+
+    <!-- cdisplay bet history with table-->
+    <table id="bet_history">
+        <tr>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Sport</th>
+            <th>Match</th>
+            <th>to Win</th>
+            <th>Bet</th>
+        </tr>
+
+        <tr>
+            <td>Lose</td>
+            <td>xx/xx/20xx xx:xx</td>
+            <td>Basketbsall</td>
+            <td>A vs B</td>
+            <td>A</td>
+            <td>$4.00</td>
+        </tr>
+        <tr>
+            <td>Lose</td>
+            <td>xx/xx/20xx xx:xx</td>
+            <td>Basketbsall</td>
+            <td>A vs B</td>
+            <td>A</td>
+            <td>$4.00</td>
+        </tr>
+
+
+    </table>
+    
+</div>
+
+
+{% endblock %}

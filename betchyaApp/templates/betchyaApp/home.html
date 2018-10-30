@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Homepage{% endblock %}
+{% load static %}
+{% block sidebar %}
+{% endblock %}
+{% block content %}
+
+<!-- General description -->
+    <section class="description" id="description">
+        <h2 class="description_header">Betchya</h2>
+        <p class="tagline">A place where all the fun betting begins</p>
+    </section>
+
+<!-- different sports for display-->
+    <div class="gallery">
+
+      <div class="thumbnail">
+          <h1 class="stats">Basketball</h1>
+          <h4><a href="{% url 'basketball' %}">Click here for more</a></h4>
+          <img src="{% static 'betchyaApp/images/Basketball.jpg' %}" width="270" height="270" alt="" />
+      </div>
+
+      <div class="thumbnail">
+          <h1 class="stats">Soccer</h1>
+          <h4><a href="{% url 'soccer' %}">Click here for more</a></h4>
+          <img src="{% static 'betchyaApp/images/Soccer.jpg' %}" width="270" height="270" alt="" />
+      </div>
+
+      <div class="thumbnail">
+          <h1 class="stats">Football</h1>
+          <h4><a href="{% url 'football' %}">Click here for more</a></h4>
+          <img src="{% static 'betchyaApp/images/Football.jpg' %}" width="270" height="270" alt="" />
+      </div>
+
+    </div>
+{% endblock %}

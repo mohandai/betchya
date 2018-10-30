@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% load static %}
+{% block sidebar %}
+{% endblock %}
+{% block content %}
+<script type="text/javascript" src="{% static 'betchyaApp/js/jquery-1.4.0.min.js' %}"></script>
+
+    <!-- asking for necessary info for registration-->
+    <form action="" method="POST">
+        {% csrf_token %}
+
+            <div class="container">
+            <h1>Register for your own Betchya account.</h1>
+            <p>Start your own fun journey today!</p>
+
+            <hr>
+        {% if error_message %}<p><strong style='color:red;'>{{ error_message }}</strong></p>{% endif %}
+
+            <label for="username"><b>Please enter a Username</b></label>
+            <input type="text" placeholder="Enter a username" name="username" required>
+
+            <label for="password"><b>Please enter a Password</b></label>
+            <input type="text" placeholder="Enter a password" name="password" required>
+
+            <label for="re-password"><b>Please re-enter the Password</b></label>
+            <input type="text" placeholder="Re-enter the password" name="password_reentered" required>
+
+            <label for="first_name"><b>Please enter your First Name</b></label>
+            <input type="text" placeholder="Enter your First Name" name="first_name" required>
+
+            <label for="last_name"><b>Please enter your Last Name</b></label>
+            <input type="text" placeholder="Enter your Last Name" name="last_name" required>
+
+            <label for="email"><b>Please enter your Email</b></label>
+            <input type="text" placeholder="Enter your email" name="email" required>
+
+            <label for="phone"><b>Please enter your Phone Number</b></label>
+            <input type="text" placeholder="Enter your phone number" name="phone" required>
+
+            <label for="bio"><b>Please enter your Bio</b></label>
+            <input type="text" placeholder="Enter your bio" name="bio">
+
+            <p>Card Details:</p>
+
+            <label for="card_no"><b>Please enter your Card Number</b></label>
+            <input type="text" placeholder="Enter your card number" name="card_no">
+
+            <label for="card_name"><b>Please enter your Card Name</b></label>
+            <input type="text" placeholder="Enter the name on your card" name="card_name">
+
+            <label for="card_expiry"><b>Please enter your card's Expiry Date</b></label>
+            <input type="text" placeholder="Enter your card's expiry date: MM/YY" name="card_expiry">
+
+            <label for="card_securityID"><b>Please enter your Card's Security Code</b></label>
+            <input type="text" placeholder="Enter your CCV Security Code" name="card_securityID">
+
+            <button type="submit" class="submitbtn">Register</button>
+            <button type="submit" class="previousbtn" formaction="{% url 'home' %}" formnovalidate>Cancel</button>
+
+        </div>
+    </form>
+
+  <script  src="{% static 'betchyaApp/js/performAjax.js' %}"></script>
+  <script  src="{% static 'betchyaApp/js/backend.js' %}"></script> 
+{% endblock %}

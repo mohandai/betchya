@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}My account{% endblock %}
+{% load static %}
+{% block content %}
+
+<!--mainContent div tag-->
+<form action="/edit_detail" method="GET">
+    {% csrf_token %}
+    <div id="mainContent">
+        <h1> Account Details </h1>
+
+        {% if error_message %}
+        <p><strong style='color:red;'>{{ error_message }}</strong></p>
+        {%endif%}
+
+        <label for="username"><b>Username</b></label>
+        <hr>
+        <p>{{dictionary.username}}</p>
+        <br></br>
+
+        <label for="name"><b>Name</b></label>
+
+        <hr>
+        <p>{{dictionary.firstname}} {{dictionary.lastname}}</p>
+        <br></br>
+
+        <label for="contact"><b>Contact Details</b></label>
+        <hr>
+        <p>Phone: {{dictionary.phone}} </p>
+        <p>Email: {{dictionary.email}}</p>
+        <br></br>
+
+        <label for="bio"><b>Bio</b></label>
+        <hr>
+        <p>{{dictionary.bio}}</p>
+        <br></br>
+
+        <label for="balance"><b>Account Balance</b></label>
+        <hr>
+        <p>${{dictionary.balance}}</p>
+        <br></br>
+
+        <button type="submit" class="submitbtn">Edit Details</button>
+
+    </div>
+</form>
+
+{% endblock %}

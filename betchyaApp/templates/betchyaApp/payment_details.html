@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Payment Details{% endblock %}
+{% load static %}
+{% block content %}
+
+<div id="mainContent">
+    <h1>Payment Details</h1>
+
+    <!-- ask for payment details-->
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        <table id="bet_history">
+            <tr>
+                <th>Card Name</th>
+                <th>Card Number</th>
+                <th>Expiry</th>
+                <th>Primary Card Selected</th>
+                {% if request.session.is_login %}
+                <th>Action</th>
+                {% endif %}
+            </tr>
+
+            {% for q in dictionary.card_query %}
+            <tr>
+                <td>{{ q.cardname }}</td>
+                <td>{{ q.cardnumber }}</td>
+                <td>{{ q.expirydate }}</td>
+
+                {% if request.session.is_login %}
+                <td>
+                    {% if dictionary.user.cardid == q.cardid %}
+                    <input type="radio" checked="checked" name="primary_card_id" value={{q.cardid}} required onchange='this.form.submit();'> {{dictionary.teamA}} @ {{dictionary.oddsA}} <br>
+                    {%else%}
+                    <input type="radio" name="primary_card_id" value={{q.cardid}} required onchange='this.form.submit();'> {{dictionary.teamA}} @ {{dictionary.oddsA}} <br>
+                    {%endif%}
+                </td>
+                <td><button type="submit" name="submitbtn" value="{{value.market_id}}">delete</button></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+
+        </table>
+        <hr>
+
+    </form>
+
+    <form action="/add_card" method="GET">
+        {% csrf_token %}
+        <button type="submit" class="previousbtn">Add Card</button>
+    </form>
+
+    <form action="/transfer_money" method="GET">
+        {% csrf_token %}
+        <button type="submit" class="nextbtn">Transfer Funds</button>
+    </form>
+
+
+</div>
+
+{% endblock %}

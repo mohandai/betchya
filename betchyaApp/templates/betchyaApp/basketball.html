@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+<!-- extend the title part to other pages and change it to Basketball -->
+{% block title %}Basketball{% endblock %}
+{% load static %}
+{% block sidebar %}
+{% endblock %}
+{% block content %}
+
+{% autoescape off %}
+
+<!--send the data to the page using method 'Post' from database -->
+<form action="" method="POST" >
+	
+	<!-- implement the csrf token to prevent the csrf attacks -->
+    {% csrf_token %}
+	
+	<!-- specifies the main content of page -->
+    <div class="container" style=overflow-y:auto>
+
+        <!-- specifies the page heading -->
+        <h1>Basketball Matches</h1>
+
+			<!-- create a table to display the basketball matches -->
+            <table id="bet_history">
+				
+				<!-- specifies a row of attribute header cell of table -->
+                <tr>
+                    <th>Home Team</th>
+                    <th>Odds (to Win)</th>
+                    <th>Away Team</th>
+                    <th>Odds (to Win)</th>
+                    <th>Start Time</th>
+                    <th>Country</th>
+					
+					<!-- display action part when logging in -->
+                    {% if request.session.is_login %}
+                        <th>Action</th>
+                    {% endif %}
+					
+                </tr>
+
+				<!-- looping through the database for the matches information -->
+                {% for value in dictionary %}
+				
+					<!-- specifies a row of mathches information -->
+                    <tr>
+						
+						<!-- manually escape the variables -->
+                        <td>{{ value.teamA |escape}}</td>
+                        <td>{{ value.oddsA |escape}}</td>
+                        <td>{{ value.teamB |escape}}</td>
+                        <td>{{ value.oddsB |escape}}</td>
+                        <td>{{ value.start_datetime |escape}}</td>
+                        <td>{{ value.country_code |escape}}</td>
+						
+						<!-- dispaly the 'place a bet' buttom when logging in --> 
+                        {% if request.session.is_login %}
+                            <td><button type="submit" name="submitbtn" value="{{value.market_id}}">Place a Bet</button></td>
+                        {% endif %}
+						
+                    </tr>
+				
+                {% endfor %}
+
+            </table>
+        <hr>
+
+    </div>
+	
+</form>
+
+{% endautoescape %}
+{% endblock %}

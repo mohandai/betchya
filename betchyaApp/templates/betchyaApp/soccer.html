@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Soccer{% endblock %}
+{% load static %}
+{% block sidebar %}
+{% endblock %}
+{% block content %}
+
+    <form action="" method="POST" >
+        {% csrf_token %}
+
+            <div class="container" style=overflow-y:auto>
+                <h1>Soccer Matches</h1>
+
+                <table id="bet_history">
+                    <tr>
+                        <th>Home Team</th>
+                        <th>Odds (to Win)</th>
+                        <th>Away Team</th>
+                        <th>Odds (to Win)</th>
+                        <th>Start Time</th>
+                        <th>Country</th>
+                        {% if request.session.is_login %}
+                            <th>Action</th>
+                        {% endif %}
+                    </tr>
+
+                    {% for value in dictionary %}
+                        <tr>
+                            <td>{{ value.teamA }}</td>
+                            <td>{{ value.oddsA }}</td>
+                            <td>{{ value.teamB }}</td>
+                            <td>{{ value.oddsB }}</td>
+                            <td>{{ value.start_datetime }}</td>
+                            <td>{{ value.country_code }}</td>
+                            {% if request.session.is_login %}
+                                <td><button type="submit" name="submitbtn" value="{{value.market_id}}">Place a Bet</button></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+
+                </table>
+            <hr>
+
+            </div>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Pending bet{% endblock %}
+{% load static %}
+{% block content %}
+
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <div id="mainContent">
+        <!-- display pending bet details-->
+        <h1> Pending Bets </h1>
+
+        <table id="bet_history">
+            <tr>
+                <th>Date</th>
+                <th>Sport</th>
+                <th>Match</th>
+                <th>to Win</th>
+                <th>Counterparty</th>
+                <th>Bet</th>
+                {% if request.session.is_login %}
+                <th>Action</th>
+                {% endif %}
+            </tr>
+
+            {% for value in dictionary %}
+            <tr>
+                <td>{{ value.betid }}</td>
+
+                <!-- <td>{{ value.startDate }}</td> -->
+                <td>{{ value.sport }}</td>
+                <td>{{ value.match_teams }}</td>
+                <td>{{ value.to_win }}</td>
+                <td>{{ value.counterparty }}</td>
+                <td>${{ value.stake }}</td>
+
+                {% if request.session.is_login %}
+                <td><button type="submit" name='cancel' value={{value.betid}}>Cancel</button></td>
+                {% endif %}
+
+                {% endfor %}
+
+            </tr>
+
+        </table>
+        <hr>
+
+    </div>
+
+</form>
+
+{% endblock %}

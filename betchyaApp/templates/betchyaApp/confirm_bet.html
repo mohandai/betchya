@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Confirm Bet{% endblock %}
+{% load static %}
+{% block sidebar %}
+{% endblock %}
+{% block content %}
+
+
+<div class="container">
+	<form action="" method="POST">
+		{% csrf_token %}
+		<h1>Bet Confirmation</h1>
+
+		<hr>
+		{% if error_message %}<p><strong style='color:red;'>{{ error_message }}</strong></p>
+		<hr>
+		{% else %}
+		<p>Please enter your bet details to place a bet.</p>
+		{% endif %}
+
+		<!-- confirm bet details-->
+		<div class="container_bet_confirmation">
+			<label>Choose a team to win:</label><br>
+			<input type="radio" name="team" value="teamA" required> {{dictionary.teamA}} @ {{dictionary.oddsA}} <br>
+			<input type="radio" name="team" value="teamB" required> {{dictionary.teamB}} @ {{dictionary.oddsB}} <br>
+
+			<label>Choose a counterparty:</label><br>
+			<select name="counterparty">
+				<option value='Betchya'>Betchya</option>
+				<option value='u2'>u2</option>
+				<option value='u3'>u3</option>
+				<option value='User3'>u4</option>
+			</select>
+			<br></br>
+
+			<label>Bet Amount:</label><br>
+			<input type="small" placeholder="AU$" name="stake" required><br>
+		</div>
+
+		<button type="submit" class="submitbtn">Submit</button>
+
+
+	</form>
+
+
+	<button type="submit" class="pastbtn" onclick="goBack()">Cancel</button>
+	<script>
+		function goBack() {
+			window.history.back();
+		}
+	</script>
+
+
+</div>
+
+{% endblock %}

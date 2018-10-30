@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% load static %}
+{% block sidebar %}
+{% endblock %}
+{% block content %}
+
+    <div class="container">
+        <form action="" method="POST">
+
+        <!-- confirm login details-->
+            {% csrf_token %}
+
+                <h1>Please Enter your Login Details</h1>
+                <p>Don't have an Account? Register <a href="#register.html">here</a></p>
+
+                <hr>
+            {% if error_message %}<p><strong style='color:red;'>{{ error_message }}</strong></p>{% endif %}
+
+            <label for="username"><b>Username</b></label>
+            <input id="loginUsername" type="text" placeholder="Please enter your username" name="username" required>
+
+            <label for="password"><b>Password</b></label>
+            <input id="loginPassword" type="text" placeholder="Please enter your password" name="password" required>
+
+            <button type="submit" class="submitbtn">Login</button>
+            <button type="submit" class="pastbtn" formaction="{% url 'home' %}" formnovalidate>Back to Homepage</button>
+
+        </form>
+    </div>
+
+{% endblock %}
