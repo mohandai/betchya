@@ -4,29 +4,32 @@
 {% block sidebar %}
 {% endblock %}
 {% block content %}
+<script type="text/javascript" src="{% static 'betchyaApp/js/jquery-1.4.0.min.js' %}"></script>
 
-    <div class="container">
-        <form action="" method="POST">
+<div class="container">
+  <form action="" method="POST">
+  {% csrf_token %}
+      <h1>Please Enter your Login Details</h1>
+      <p>Don't have an Account? Register <a href = "{% url 'register' %}">here</a></p>
+      <hr>
+      {% if error_message %}<p><strong style='color:red;'>{{ error_message }}</strong></p>{% endif %}
+  
+      <label for="username"><b>Username</b></label>
+      <input id="loginUsername" type="text" placeholder="Please enter your username" name="username" required>
 
-        <!-- confirm login details-->
-            {% csrf_token %}
+      <label for="password"><b>Password</b></label>
+      <input id="loginPassword" type="text" placeholder="Please enter your password" name="password" required>
 
-                <h1>Please Enter your Login Details</h1>
-                <p>Don't have an Account? Register <a href="#register.html">here</a></p>
+      <button type="button" class="submitbtn" id="login_button">Login</button>
+      <button type="" class="pastbtn" formaction="{% url 'home' %}" formnovalidate>Back to Homepage</button>
+  </form>
+</div>
 
-                <hr>
-            {% if error_message %}<p><strong style='color:red;'>{{ error_message }}</strong></p>{% endif %}
 
-            <label for="username"><b>Username</b></label>
-            <input id="loginUsername" type="text" placeholder="Please enter your username" name="username" required>
+  <script  src="{% static 'betchyaApp/js/performAjax.js' %}"></script>
+  <script  src="{% static 'betchyaApp/js/backend.js' %}"></script> 
 
-            <label for="password"><b>Password</b></label>
-            <input id="loginPassword" type="text" placeholder="Please enter your password" name="password" required>
 
-            <button type="submit" class="submitbtn">Login</button>
-            <button type="submit" class="pastbtn" formaction="{% url 'home' %}" formnovalidate>Back to Homepage</button>
 
-        </form>
-    </div>
 
 {% endblock %}

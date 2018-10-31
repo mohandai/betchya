@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password, check_password
 from .models import *
 from .controller import *
+import json
 
 import logging
 
@@ -24,44 +25,45 @@ def login(request):
 	except:
 		pass
 
-	if request.method == "POST":
-		#print(request.POST)
+	response_data = {'email_found':'false', 'password_matched':'false'}
 
-		username = request.POST.get('username')
-		password = request.POST.get('password')
-		valid_result = valid_user(username, password)
-		if valid_result['result'] == True:
-			request.session['is_login'] = True
-			request.session['username'] = valid_result['username']
-			request.session['balance'] = valid_result['balance']
-			return redirect('/')
-		else:
-			return render(request, 'betchyaApp/login.html', {'error_message':valid_result['err_message']})
+	if request.method == "POST":
+		#response_data = {'username_found':'false', 'password_matched':'false'}
+		try:
+			data = json.loads(request.body)
+			username = data['username']
+			password = data['password']
+		except:
+			return JsonResponse(response_data)
+
+		try:
+			# retrieve matching user
+			user = User.objects.get(username=username)
+
+			# verify that the password matches the matching username
+			# save necessary data to session: username and user balance
+			if check_password(password, user.password):
+				request.session['is_login'] = True
+				request.session['username'] = user.username
+				request.session['balance'] = user.balance
+				response_data['password_matched'] = 'true'
+				response_data['email_found'] = 'true'
+				return JsonResponse(response_data)
+				#return redirect('/')
+
+			# passwords don't match
+			else:
+				return JsonResponse(response_data)
+				#return render(request, 'betchyaApp/login.html', {'error_message':'Incorrect Password. Please Try Again.'})
+
+		# user doesn't exist
+		except:
+			response_data['email_found'] = 'true'
+			return JsonResponse(response_data)
+			#return render(request, 'betchyaApp/login.html', {'error_message':'Invalid Username. Please Try Again.'})
+
 	return render(request, 'betchyaApp/login.html')
 
-def valid_user(username, password):
-	result = {'result':False, 'err_message':'validation failed'}
-	try:
-		# retrieve matching user
-		user = User.objects.get(username=username)
-
-		# verify that the password matches the matching username
-		# save necessary data to session: username and user balance
-		if check_password(password, user.password):
-			result['result']= True
-			result['username'] = user.username
-			result['balance'] = user.balance
-			return result
-
-		# passwords don't match
-		else:
-			result['err_message'] = 'Incorrect Password. Please Try Again.'
-			return result
-
-	# user doesn't exist
-	except:
-		result['err_message'] = 'Invalid Username. Please Try Again.'
-		return result
 
 def register(request):
 	try:
@@ -71,46 +73,63 @@ def register(request):
 		pass
 
 	if request.method == "POST":
-		username = request.POST.get('username')
-		password = request.POST.get('password')
-		password_reentered = request.POST.get('password_reentered')
+		response_data = {'register_result':'false', 'error_message':'Registration failed'}
+		
+		try:
+			data = json.loads(request.body)
 
-		# check if passwords match
-		if password != password_reentered:
-			return render(request, 'betchyaApp/register.html', {'error_message':'The re-entered password does not match. Please try again.'})
+			username = data['username']
+			password = data['password']
+			password_reentered = data['password2']
+			#data['']
 
-		# check if username already exists
-		existing_user = User.objects.filter(username=username)
-		if existing_user:
-			return render(request, 'betchyaApp/register.html', {'error_message':'This username is already taken. Please choose another username.'})
+			# check if passwords match
+			if password != password_reentered:
+				response_data['error_message'] = 'The re-entered password does not match. Please try again.'
+				#response_data['error_message'] = ''
+				return JsonResponse(response_data)
+				#return render(request, 'betchyaApp/register.html', {'error_message':'The re-entered password does not match. Please try again.'})
 
-		# format expiry as Date on the first of the month
-		expiry = request.POST.get('card_expiry').split('/')
-		expirydate = '20{0}-{1}-01'.format(expiry[1], expiry[0])
+			# check if username already exists
+			existing_user = User.objects.filter(username=username)
+			if existing_user:
+				response_data['error_message'] = 'This username is already taken. Please choose another username.'
+				return JsonResponse(response_data)
+				#return render(request, 'betchyaApp/register.html', {'error_message':'This username is already taken. Please choose another username.'})
 
-		# insert new card
-		new_card = Card.objects.create(username = username,
-										cardname = request.POST.get('card_name'),
-										cardnumber = request.POST.get('card_no'),
-										expirydate = expirydate,
-										securitycode = request.POST.get('card_securityID'))
+			# format expiry as Date on the first of the month
+			ex = data['cardexpiry']
+			expiry = ex.split('/')
+			expirydate = '20{0}-{1}-01'.format(expiry[1], expiry[0])
+			
+			# insert new card
+			new_card = Card.objects.create(username = username,
+											cardname = data['cardname'],
+											cardnumber = data['cardno'],
+											expirydate = expirydate,
+											securitycode = data['cardccv'])
 
-		# insert new user
-		new_user = User.objects.create(username = username,
-										password = make_password(password),
-										balance = 0.00,
-										firstname = request.POST.get('first_name'),
-										lastname = request.POST.get('last_name'),
-										bio = request.POST.get('bio'),
-										email = request.POST.get('email'),
-										phone = request.POST.get('phone'),
-										primarycardid = new_card)
+			# insert new user
+			new_user = User.objects.create(username = username,
+											password = make_password(password),
+											balance = 0.00,
+											firstname = data['firstname'],
+											lastname = data['lastname'],
+											bio = data['bio'],
+											email = data['email'],
+											phone = data['phone'],
+											primarycardid = new_card)
 
-		# redirect to login to allow user to login to new account
-		return redirect('/login')
-
+			# redirect to login to allow user to login to new account
+			response_data['register_result'] = 'true'
+			response_data['error_message'] = ''
+			return JsonResponse(response_data)
+			#return redirect('/login')
+		except:
+			response_data['error_message'] = 'Registration failed! Incorrect input format'
+			return JsonResponse(response_data)
+			
 	return render(request, 'betchyaApp/register.html')
-
 
 def logout(request):
 	if not request.session.get('is_login', None):
@@ -136,10 +155,13 @@ def basketball(request):
 		# Also figure out how to only show those that haven't taken place
 
 	if request.method == "POST":
-		# save the chosen market id to the session for access in confirm_bet()
-		marketid = request.POST.get("submitbtn")
-		request.session['confirm_bet_marketid'] = marketid
-		# reroute to confirm_bet now that a place bet has been made
+		try:
+			# save the chosen market id to the session for access in confirm_bet()
+			marketid = request.POST.get("submitbtn")
+			request.session['confirm_bet_marketid'] = marketid
+			# reroute to confirm_bet now that a place bet has been made
+		except:
+			redirect("/basketball")
 		return redirect("/confirm_bet")
 
 def soccer(request):
@@ -217,66 +239,69 @@ def get_betslip_data(request):
 
 
 def confirm_bet(request):
-
-	# On first display
-	if request.method == "GET":
+	try:
 		to_display = get_betslip_data(request)
-
-		print(to_display)
+	except:
+		pass
+	# On first display
+	#if request.method == "GET":
+		#print(to_display)
 
 		# TODO
 		# Need to come back and list contacts
 
-		return render(request, 'betchyaApp/confirm_bet.html', {"dictionary": to_display})
+		#return render(request, 'betchyaApp/confirm_bet.html', {"dictionary": to_display})
 
 	# When submit is pressed
 	if request.method == "POST":
+		try:
 
-		to_display = get_betslip_data(request)
+			#to_display = get_betslip_data(request)
 
-		#  TODO
-		# Need to come back and list contacts to bet against (if time)
+			#  TODO
+			# Need to come back and list contacts to bet against (if time)
 
-		# Bet model
-		# betid, username, counterparty, marketid, teamid, stake, accept, result
-		# accept: Yes, No
-		# result: Win, Loss, NULL
-		user = User.objects.get(username=request.session['username'])
-		market = Market.objects.get(marketid=to_display['marketID'])
-		teamname = to_display[request.POST.get("team")]
-		team = Team.objects.get(name=teamname)
-		counterparty = User.objects.get(username=request.POST.get("counterparty"))
-		stake = float(request.POST.get("stake"))
-		accept = 'No'
-		result = None
+			# Bet model
+			# betid, username, counterparty, marketid, teamid, stake, accept, result
+			# accept: Yes, No
+			# result: Win, Loss, NULL
+			user = User.objects.get(username=request.session['username'])
+			market = Market.objects.get(marketid=to_display['marketID'])
+			teamname = to_display[request.POST.get("team")]
+			team = Team.objects.get(name=teamname)
+			counterparty = User.objects.get(username=request.POST.get("counterparty"))
+			stake = float(request.POST.get("stake"))
+			accept = 'No'
+			result = None
 
-		# does not require acceptance as the bet is against the house
-		if counterparty.username == 'Betchya':
-			accept = 'Yes'
+			# does not require acceptance as the bet is against the house
+			if counterparty.username == 'Betchya':
+				accept = 'Yes'
 
-		# ensure balance is valid to place bet
-		if request.session['balance'] < stake:
-			return render(request, 'betchyaApp/confirm_bet.html',
-									{"dictionary": to_display,
-									"error_message":"Invalid funds to place bet. Please reduce stake or transfer funds."})
+			# ensure balance is valid to place bet
+			if request.session['balance'] < stake:
+				return render(request, 'betchyaApp/confirm_bet.html',
+										{"dictionary": to_display,
+										"error_message":"Invalid funds to place bet. Please reduce stake or transfer funds."})
 
-		new_balance = request.session['balance'] - stake
-		User.objects.filter(username=request.session['username']).update(balance=new_balance)
+			new_balance = request.session['balance'] - stake
+			User.objects.filter(username=request.session['username']).update(balance=new_balance)
 
-		request.session['balance'] = User.objects.get(username=request.session['username']).balance
-
-
-		new_bet = Bet.objects.create(username=user,
-										counterparty=counterparty,
-										market=market,
-										team=team,
-										stake=stake,
-										accept=accept,
-										result=result)
+			request.session['balance'] = User.objects.get(username=request.session['username']).balance
 
 
-		return redirect('/pending_bet')
+			new_bet = Bet.objects.create(username=user,
+											counterparty=counterparty,
+											market=market,
+											team=team,
+											stake=stake,
+											accept=accept,
+											result=result)
 
+
+			return redirect('/pending_bet')
+		except:
+			render(request, 'betchyaApp/confirm_bet.html', {"dictionary": to_display})
 	return render(request, 'betchyaApp/confirm_bet.html', {"dictionary": to_display})
 
 
@@ -315,25 +340,26 @@ def add_card(request):
 
 
 def edit_detail(request):
+	try:
 
-	if request.method == "POST":
+		if request.method == "POST":
 
-		firstname = request.POST.get('first_name')
-		lastname = request.POST.get('last_name')
-		phone = request.POST.get('phone')
-		email = request.POST.get('email')
-		bio = request.POST.get('bio')
+			firstname = request.POST.get('first_name')
+			lastname = request.POST.get('last_name')
+			phone = request.POST.get('phone')
+			email = request.POST.get('email')
+			bio = request.POST.get('bio')
 
-		username = request.session['username']
-		current = User.objects.filter(username=request.session['username'])
-		current.update(firstname=firstname)
-		current.update(lastname=lastname)
-		current.update(phone=phone)
-		current.update(email=email)
-		current.update(bio=bio)
-		return redirect('/my_account')
-
-
+			username = request.session['username']
+			current = User.objects.filter(username=request.session['username'])
+			current.update(firstname=firstname)
+			current.update(lastname=lastname)
+			current.update(phone=phone)
+			current.update(email=email)
+			current.update(bio=bio)
+			return redirect('/my_account')
+	except:
+		pass
 	return render(request, 'betchyaApp/edit_detail.html')
 
 
@@ -351,18 +377,20 @@ def my_account(request):
 def pending_bet(request):
 
 	if request.method == "POST":
+		try:
 
-		betid = request.POST.get('cancel')
-		b = Bet.objects.get(betid=betid)
+			betid = request.POST.get('cancel')
+			b = Bet.objects.get(betid=betid)
 
-		# add back balance
-		new_balance = request.session['balance'] + b.stake
-		User.objects.filter(username=request.session['username']).update(balance=new_balance)
-		request.session['balance'] = User.objects.get(username=request.session['username']).balance
+			# add back balance
+			new_balance = request.session['balance'] + b.stake
+			User.objects.filter(username=request.session['username']).update(balance=new_balance)
+			request.session['balance'] = User.objects.get(username=request.session['username']).balance
 
-		# delete bet
-		Bet.objects.filter(betid=betid).delete()
-
+			# delete bet
+			Bet.objects.filter(betid=betid).delete()
+		except:
+			pass
 		return redirect('/pending_bet')
 
 	if request.method == "GET":
@@ -453,3 +481,35 @@ def transfer_money(request):
 
 
 	return render(request, 'betchyaApp/transfer_money.html')
+
+
+def api_matches(request, sport):
+	response_data = {
+	'status':'success',
+	'data':'',
+	'message':'success retrieving games'
+	}
+
+	try:
+		matches = retrieve_games(sport)
+		for m in matches:
+			del m['market_id']
+		response_data['data'] = matches
+
+	except:
+		response_data['status'] = 'failed'
+		response_data['message'] = 'cannot get matches information'
+		JsonResponse(response_data)
+
+	return JsonResponse(response_data)
+
+
+
+
+
+
+
+
+
+
+

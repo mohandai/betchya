@@ -85,14 +85,11 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'suibian',
-        'USER': 'suibian',
-        'PASSWORD': 'suibian',
-        #'HOST':'192.168.3.67',
-        #'PORT':'3306',
-        'OPTIONS': {
-            'autocommit': True,
-        },
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST':'',
+        'PORT':'3306',
     }
 }
 

@@ -35,4 +35,5 @@ urlpatterns = [
     path('pending_bet/', views.pending_bet, name='pending_bet'),
     path('soccer/', views.soccer, name='soccer'),
     path('transfer_money/', views.transfer_money, name='transfer_money'),
+    path('api/<str:sport>/matches/', views.api_matches, name='api_matches'),
 ]
