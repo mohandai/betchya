@@ -30,9 +30,10 @@ def login(request):
 	if request.method == "POST":
 		#response_data = {'username_found':'false', 'password_matched':'false'}
 		try:
-			data = json.loads(request.body)
 			print('printing sxxxxxxxxxxxxfjawe;fxxxxxx')
-			response_data['json'] = str(data)
+			data = json.loads(request.body)
+			
+			#response_data['json'] = str(data)
 			username = data['username']
 			password = data['password']
 		except:
