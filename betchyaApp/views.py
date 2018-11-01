@@ -34,8 +34,8 @@ def login(request):
 			username = data['username']
 			password = data['password']
 		except:
-			response_data['message':'cannot get json data!']
-			response_data['json':str(data)]
+			response_data['message'] = 'cannot get json data!'
+			response_data['json'] = str(data)
 			return JsonResponse(response_data)
 
 		try:
