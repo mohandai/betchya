@@ -31,6 +31,7 @@ def login(request):
 		#response_data = {'username_found':'false', 'password_matched':'false'}
 		try:
 			print('printing sxxxxxxxxxxxxfjawe;fxxxxxx')
+			print(request.body)
 			data = json.loads(request.body)
 			
 			#response_data['json'] = str(data)
