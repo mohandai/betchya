@@ -87,12 +87,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'suibian',
         'USER': 'suibian',
-        'PASSWORD': 'elec3609',
-        'HOST':'45.63.29.1',
+        'PASSWORD': '',
+        'HOST':'',
         'PORT':'3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
