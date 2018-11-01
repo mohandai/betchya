@@ -85,10 +85,10 @@ DATABASES = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST':'',
+        'NAME': 'suibian',
+        'USER': 'suibian',
+        'PASSWORD': 'elec3609',
+        'HOST':'45.63.29.1',
         'PORT':'3306',
     }
 }
