@@ -32,7 +32,7 @@ def login(request):
 		try:
 			data = json.loads(request.body)
 			print('printing sxxxxxxxxxxxxfjawe;fxxxxxx')
-			response_data['json'] =str(data)
+			response_data['json'] = str(data)
 			username = data['username']
 			password = data['password']
 		except:
