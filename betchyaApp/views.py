@@ -32,7 +32,7 @@ def login(request):
 		try:
 			print('printing sxxxxxxxxxxxxfjawe;fxxxxxx')
 			#print(request.body)
-			data = json.loads(request.bodya.decode('utf-8'))
+			data = json.loads(request.body.decode('utf-8'))
 			
 			#response_data['json'] = str(data)
 			username = data['username']
