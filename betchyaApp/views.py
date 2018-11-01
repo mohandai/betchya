@@ -83,7 +83,7 @@ def register(request):
 		response_data = {'register_result':'false', 'error_message':'Registration failed'}
 		
 		try:
-			data = json.loads(request.body)
+			data = json.loads(request.body.decode('utf-8'))
 
 			username = data['username']
 			password = data['password']
