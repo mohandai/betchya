@@ -87,8 +87,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'suibian',
         'USER': 'suibian',
-        'PASSWORD': '',
-        'HOST':'',
+        'PASSWORD': 'elec3609',
+        'HOST':'149.28.27.128',
         'PORT':'3306',
     }
 }
