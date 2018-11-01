@@ -2,18 +2,18 @@
 server {
 	listen	80;
  
-	root	/var/www/html;
+	root	/downloads/betchya/betchyaApp;
  
 	index	index.html index.htm index.nginx-debian.html;
  
 	server_name	(54.252.136.227);
  
 	location /static {
-		alias	(/downloads/betchya/betchyaApp/static);
+		alias	(/static);
 	}
 	
 	location /media {
-		alias	(/downloads/betchya/betchyaApp/static);
+		alias	(/static);
 	}
  
 	location / {
