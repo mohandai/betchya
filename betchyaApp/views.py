@@ -31,10 +31,11 @@ def login(request):
 		#response_data = {'username_found':'false', 'password_matched':'false'}
 		try:
 			data = json.loads(request.body)
+			print(data)
 			username = data['username']
 			password = data['password']
 		except:
-			print(data)
+
 			response_data['message'] = 'cannot get json data!'
 			response_data['json'] =''
 			return JsonResponse(response_data)
