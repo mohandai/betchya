@@ -1,0 +1,40 @@
+*** Starting uWSGI 2.0.17.1 (64bit) on [Thu Nov  1 21:20:24 2018] ***
+compiled with version: 4.8.4 on 01 November 2018 17:50:30
+os: Linux-3.13.0-158-generic #208-Ubuntu SMP Fri Aug 24 17:07:38 UTC 2018
+nodename: ip-172-31-5-45
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/ubuntu/betchya
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 7860
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+probably another instance of uWSGI is running on the same address (:8000).
+bind(): Address already in use [core/socket.c line 769]
+*** Starting uWSGI 2.0.17.1 (64bit) on [Thu Nov  1 21:20:32 2018] ***
+compiled with version: 4.8.4 on 01 November 2018 17:50:30
+os: Linux-3.13.0-158-generic #208-Ubuntu SMP Fri Aug 24 17:07:38 UTC 2018
+nodename: ip-172-31-5-45
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 1
+current working directory: /home/ubuntu/betchya
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 7860
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+probably another instance of uWSGI is running on the same address (:8000).
+bind(): Address already in use [core/socket.c line 769]
